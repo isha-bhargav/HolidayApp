@@ -101,7 +101,8 @@ public class Main2Activity extends AppCompatActivity {
                                         member.setPass(pass_ed.getText().toString().trim());
                                         member.setManager1("");
                                         member.setManager2("");
-                                       reff.child(name).setValue(member);
+                                        reff.child(name).setValue(member);
+                                        //reff.push().setValue(member);
                                         Intent intent=new Intent(Main2Activity.this,MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);

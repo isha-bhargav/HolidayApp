@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    ArrayList<Member>list;
+    static ArrayList<Member>list;
     Context context;
    // FirebaseAuth firebaseAuth;
    // FirebaseUser user;
@@ -59,7 +59,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     Toast.makeText(context, "please complete the information", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
             }
             });
     }
@@ -71,7 +70,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tname;
+        TextView tname,t_display;
         EditText edmanager1,edmanager2;
         Button assign_btn;
         LinearLayout layout;
@@ -81,7 +80,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             edmanager1=itemView.findViewById(R.id.manager1_id);
             edmanager2=itemView.findViewById(R.id.manager2_id);
             assign_btn=itemView.findViewById(R.id.assign_id);
-            //tmanager=itemView.findViewById(R.id.txt_id);
+            t_display=itemView.findViewById(R.id.t1);
             layout=itemView.findViewById(R.id.layout_id);
         }
     }

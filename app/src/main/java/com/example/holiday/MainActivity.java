@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    Button reg_btn,log_btn,admin_btn;
+    Button reg_btn,log_btn;
     EditText email_ed,pass_ed;
     private FirebaseAuth firebaseAuth;
     String email,pass;
@@ -30,18 +30,11 @@ public class MainActivity extends AppCompatActivity {
         log_btn=findViewById(R.id.log_id);
         email_ed=findViewById(R.id.email_id);
         pass_ed=findViewById(R.id.pass_id);
-        admin_btn=findViewById(R.id.admin_id);
         firebaseAuth=FirebaseAuth.getInstance();
         reg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,Main2Activity.class));
-            }
-        });
-        admin_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Admin_login.class));
             }
         });
 

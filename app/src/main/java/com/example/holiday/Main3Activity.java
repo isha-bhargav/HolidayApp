@@ -39,7 +39,9 @@ public class Main3Activity extends AppCompatActivity {
         tm2 = findViewById(R.id.manage2_id);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-            reff3 = FirebaseDatabase.getInstance().getReference().child("Member");
+            reff3 = FirebaseDatabase.getInstance().getReference("Member");
+            //.child("Member");
+            //.child(user.getUid());
             out_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -51,21 +53,22 @@ public class Main3Activity extends AppCompatActivity {
             reff3.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    //String name=dataSnapshot.child(user.getUid()).child("name").getValue().toString();
-                    // Log.i("log",dataSnapshot.child(user.getUid()).child("pass").getValue().toString());
-                    // String manager1 = dataSnapshot.child("manager1").getValue().toString();
+                   // Member m=new Member();
+                  //  Log.i("log","email");
+                   // Log.i("log",dataSnapshot.child(user.getUid()).child("pass").getValue().toString());
+                   // Member manager1 = dataSnapshot.getValue(Member.class);
+                   // Log.i("log","manager++"+manager1.getClass().toString());
                     // String manager2 = dataSnapshot.child("manager2").getValue().toString();
                     // tm1.setText(manager1);
                    // tm2.setText(manager2);
                     // tname.setText(name);
-                    Log.i("log",dataSnapshot.child(user.getUid()).toString());
+                   // Log.i("log",dataSnapshot.child(user.getUid()).toString());
 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             });
-
         }
+
     }
+

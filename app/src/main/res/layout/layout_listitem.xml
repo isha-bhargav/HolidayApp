@@ -3,9 +3,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/layout_id">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
@@ -13,7 +16,20 @@
         android:id="@+id/name_id"
         android:textColor="#000000"
         android:textStyle="italic"
+        android:textSize="20sp"
+        android:maxLines="4"
         />
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="skghdfhg"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        android:id="@+id/t1"
+        /></LinearLayout>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
