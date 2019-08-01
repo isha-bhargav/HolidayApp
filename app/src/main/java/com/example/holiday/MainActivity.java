@@ -16,75 +16,76 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-    Button reg_btn,log_btn;
-    EditText email_ed,pass_ed;
-    private FirebaseAuth firebaseAuth;
-    String email,pass;
+   EditText employeeID, email_id, pass_id;
+    Button reg_id, log_id;
+    String id;
+    String email, pass;
+    DatabaseReference ref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        reg_btn=findViewById(R.id.reg_id);
-        log_btn=findViewById(R.id.log_id);
-        email_ed=findViewById(R.id.email_id);
-        pass_ed=findViewById(R.id.pass_id);
-        firebaseAuth=FirebaseAuth.getInstance();
-        reg_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Main2Activity.class));
-            }
-        });
 
-        log_btn.setOnClickListener(new View.OnClickListener() {
+        employeeID = findViewById(R.id.employee_id);
+        email_id = findViewById(R.id.email_id);
+        pass_id = findViewById(R.id.pass_id);
+
+        reg_id=findViewById(R.id.reg_id);
+        log_id=findViewById(R.id.log_id);
+
+
+        log_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 email=email_ed.getText().toString().trim();
-                 pass=pass_ed.getText().toString().trim();
-                if(email.isEmpty())
-                {
-                    email_ed.setError("email is required");
-                    email_ed.requestFocus();
-                    return;
-                }
-                if(pass.isEmpty())
-                {
-                    pass_ed.setError("email is required");
-                    pass_ed.requestFocus();
-                    return;
-                }
-                if(pass.length()<6)
-                {
-                    pass_ed.setError("password should be minimum 6 characters");
-                    pass_ed.requestFocus();
-                    return;
-                }
-                firebaseAuth.signInWithEmailAndPassword(email,pass) .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+
+                ref = FirebaseDatabase.getInstance().getReference().child("Member");
+                ref.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
-                            Intent intent=new Intent(MainActivity.this,Main3Activity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                        }else
-                        {
-                            Toast.makeText(MainActivity.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.child(employeeID.getText().toString()).exists()) {
+                            email = dataSnapshot.child(employeeID.getText().toString()).child("email").getValue().toString();
+                            pass = dataSnapshot.child(employeeID.getText().toString()).child("pass").getValue().toString();
+                            Toast.makeText(MainActivity.this, "ID match", Toast.LENGTH_SHORT).show();
+
+                            if(email_id.getText().toString().equals(email)  /*&&pass.equals(pass_id.getText().toString())*/){
+                                Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MainActivity.this,Main3Activity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("id",employeeID.getText().toString());
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                            }
+                            else{
+                                Toast.makeText(MainActivity.this,"Enter Valid Credentials",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this,"Not exist",Toast.LENGTH_SHORT).show();
                         }
                     }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(MainActivity.this,"Not exist",Toast.LENGTH_SHORT).show();
+
+                    }
                 });
+
+            }
+        });
+        reg_id.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,register.class));
             }
         });
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(firebaseAuth.getCurrentUser()!=null)
-        {
-            finish();
-            startActivity(new Intent(MainActivity.this,Main3Activity.class));
-        }
-    }
+
 }

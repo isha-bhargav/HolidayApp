@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:padding="30dp"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    tools:context=".Manager2">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:padding="5dp"
+        android:layout_height="200dp"
+        android:padding="30dp"
         android:src="@drawable/ic_account_circle_black_24dp"
         />
     <com.google.android.material.textfield.TextInputLayout
@@ -24,29 +23,13 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Employee ID"
+            android:hint="Email"
             android:ems="10"
-            android:id="@+id/employee_id"
+            android:id="@+id/email_id"
             android:inputType="textEmailAddress"
             android:textSize="22sp"
             />
-    </com.google.android.material.textfield.TextInputLayout> <com.google.android.material.textfield.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_marginTop="5dp"
-    >
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:ems="10"
-        android:id="@+id/email_id"
-        android:inputType="textEmailAddress"
-        android:textSize="22sp"
-        />
-</com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

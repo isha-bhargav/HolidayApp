@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:id="@+id/layout">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt1"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:textStyle="italic" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt2"
+        android:textSize="20sp"
+        android:textColor="#AE000000"
+        android:textStyle="italic"
+        android:maxLines="12"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt3"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:maxLines="9"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+   <Button
+       android:layout_width="140dp"
+       android:layout_marginLeft="20dp"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="10dp"
+       android:text="approve"
+       android:id="@+id/btn1"
+       android:visibility="gone"
+       android:background="@drawable/button_rounded"/>
+        <Button
+            android:layout_width="140dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="reject"
+            android:visibility="gone"
+            android:id="@+id/btn2"
+            android:background="@drawable/button_rounded"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="#A9000000"/>
+</LinearLayout>

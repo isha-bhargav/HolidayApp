@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,6 +28,21 @@ public class MainOption extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainOption.this,MainActivity.class));
+
+            }
+        });
+        manager1_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainOption.this,Manager1.class));
+
+            }
+        });
+        manager2_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainOption.this,Manager2.class));
+
             }
         });
     }

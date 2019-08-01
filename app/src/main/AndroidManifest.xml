@@ -11,20 +11,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Dashboard_m2"></activity>
+        <activity android:name=".Dashboard_m1" />
+        <activity android:name=".register" />
+        <activity android:name=".Apply_for_leave" />
+        <activity android:name=".employeeProfile" />
+        <activity android:name=".Info" />
+        <activity android:name=".Manager2Page" />
+        <activity android:name=".Manager22" />
+        <activity android:name=".Manager1Page" />
+        <activity android:name=".Manager12" />
+        <activity android:name=".Manager2" />
+        <activity android:name=".Manager1" />
         <activity android:name=".MainOption">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".Admin_login" />
         <activity android:name=".Admin" />
         <activity android:name=".Main3Activity" />
         <activity android:name=".Main2Activity" />
-        <activity android:name=".MainActivity">
-            </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

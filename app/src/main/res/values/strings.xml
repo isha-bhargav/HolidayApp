@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Holiday</string>
+    <string name="daysleft">Days Left</string>
+    <string name="installmentleft">Installments Left</string>
+    <string name="title_activity_apply_leave">ApplyLeave</string>
+
 </resources>

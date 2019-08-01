@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:padding="30dp"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical"
+    tools:context=".Manager12">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:padding="5dp"
+        android:layout_height="150dp"
+        android:padding="30dp"
         android:src="@drawable/ic_account_circle_black_24dp"
         />
     <com.google.android.material.textfield.TextInputLayout
@@ -19,41 +19,39 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_marginTop="5dp"
         >
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Employee ID"
+            android:hint="Full Name"
             android:ems="10"
-            android:id="@+id/employee_id"
             android:inputType="textEmailAddress"
             android:textSize="22sp"
+            android:id="@+id/name_id"
             />
-    </com.google.android.material.textfield.TextInputLayout> <com.google.android.material.textfield.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_marginTop="5dp"
-    >
-    <EditText
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        android:ems="10"
-        android:id="@+id/email_id"
-        android:inputType="textEmailAddress"
-        android:textSize="22sp"
-        />
-</com.google.android.material.textfield.TextInputLayout>
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:id="@+id/email_id"
+            android:textSize="22sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:passwordToggleEnabled="true"
-        android:layout_marginTop="5dp"
         >
         <EditText
             android:layout_width="match_parent"
@@ -65,23 +63,32 @@
             android:textSize="22sp"
             />
     </com.google.android.material.textfield.TextInputLayout>
-    <Button
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textSize="20sp"
-        android:textColor="#ffffff"
-        android:background="@drawable/button_rounded"
-        android:id="@+id/log_id"
-        android:layout_marginTop="20dp"/>
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:passwordToggleEnabled="true"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:id="@+id/confirm_id"
+            android:textSize="22sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="register"
-        android:id="@+id/reg_id"
         android:textSize="20sp"
         android:textColor="#ffffff"
+        android:id="@+id/reg_id"
         android:background="@drawable/button_rounded"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="20dp"/>
+
 
 </LinearLayout>
