@@ -3,6 +3,7 @@ package com.example.holiday;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ public class Manager1 extends AppCompatActivity {
     EditText email_ed,pass_ed;
     private FirebaseAuth firebaseAuth;
     String email,pass;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,9 @@ public class Manager1 extends AppCompatActivity {
         log_btn = findViewById(R.id.log_id);
         email_ed = findViewById(R.id.email_id);
         pass_ed = findViewById(R.id.pass_id);
+        dialog=new ProgressDialog(Manager1.this);
+        dialog.setTitle(" Please wait");
+        dialog.setMessage("Signing in...");
         firebaseAuth = FirebaseAuth.getInstance();
         reg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +65,13 @@ public class Manager1 extends AppCompatActivity {
                     pass_ed.requestFocus();
                     return;
                 }
+                dialog.show();
                 firebaseAuth.signInWithEmailAndPassword(email,pass) .addOnCompleteListener(Manager1.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful())
                         {
+                            dialog.dismiss();
                             Intent intent=new Intent(Manager1.this,Manager1Page.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
@@ -77,6 +84,11 @@ public class Manager1 extends AppCompatActivity {
             }
         });
     }
+    private void showProgressDialogWithTitle(String title,String sunstring)
+    {
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

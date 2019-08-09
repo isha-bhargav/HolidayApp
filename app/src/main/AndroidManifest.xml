@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Dashboard_m2"></activity>
+        <activity android:name=".Forgot_password"></activity>
+        <activity android:name=".status_employee" />
+        <activity android:name=".Dashboard_m2" />
         <activity android:name=".Dashboard_m1" />
         <activity android:name=".register" />
         <activity android:name=".Apply_for_leave" />

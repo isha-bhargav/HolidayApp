@@ -49,6 +49,7 @@ public class Recycle_m1 extends RecyclerView.Adapter<Recycle_m1.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.txt_name.setText(list_m1.get(position).getName_m1().toString());
+        holder.txt_dates.setText(list_m1.get(position).getDates_m1().toString());
         holder.btn_approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

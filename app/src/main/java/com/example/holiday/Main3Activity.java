@@ -90,6 +90,26 @@ public class Main3Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Main3Activity.this,status_employee.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",id);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Main3Activity.this,MainOption.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
 
 

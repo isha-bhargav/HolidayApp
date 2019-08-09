@@ -3,11 +3,13 @@ package com.example.holiday;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     String id;
     String email, pass;
     DatabaseReference ref;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +43,13 @@ public class MainActivity extends AppCompatActivity {
         log_id=findViewById(R.id.log_id);
 
 
+
         log_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 ref = FirebaseDatabase.getInstance().getReference().child("Member");
+
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

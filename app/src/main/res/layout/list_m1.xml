@@ -19,7 +19,7 @@
         android:textColor="#AE000000"
         android:textStyle="italic"
         android:maxLines="12"
-        android:visibility="gone"/>
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

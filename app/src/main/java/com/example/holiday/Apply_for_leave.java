@@ -32,7 +32,7 @@ public class Apply_for_leave extends AppCompatActivity {
     Manger1_list manger1_list;
     EditText date_1, date_2, date_3, date_4, date_5, date_6,reason ;
     Button applyleave;
-    String points,today_date;
+    String points,today_date,date_day1;
     String daysleft,dates="";
     double sum;
     RadioGroup radio_1, radio_2, radio_3, radio_4, radio_5, radio_6;
@@ -80,18 +80,17 @@ public class Apply_for_leave extends AppCompatActivity {
                 leaveCalender.set(Calendar.DAY_OF_MONTH, date);
             }
         };
-
         date_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DatePickerDialog(Apply_for_leave.this, date, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
-                String myFormat = "dd/MM/yy"; //In which you need put here
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 date_1.setText(sdf.format(leaveCalender.getTime()));
                 radio_1.setVisibility(View.VISIBLE);
-                dates+="1st day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+                date_day1=sdf.format(leaveCalender.getTime());
+                dates+="1st day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";}
 
-            }
         });
 
         date_2.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +149,7 @@ public class Apply_for_leave extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 radio_6.setVisibility(View.VISIBLE);
                 date_6.setText(sdf.format(leaveCalender.getTime()));
-                dates+="6th day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+                dates+="6th day: "+leaveCalender.getTime().toString().substring(0,1)+"\n";
             }
         });
 
@@ -174,32 +173,33 @@ public class Apply_for_leave extends AppCompatActivity {
                     ref.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            daysleft = dataSnapshot.child("daysleft").getValue().toString();
 
-                            String manager1list_name=dataSnapshot.child("name").getValue().toString();
-                            ref_manager1=FirebaseDatabase.getInstance().getReference("Manger1_list");
-                           manger1_list.setName_m1(manager1list_name);
-                           manger1_list.setManager_m1_email(dataSnapshot.child("manager_m1_email").getValue().toString());
-                           manger1_list.setManager_m1(dataSnapshot.child("manager1").getValue().toString());
-                           manger1_list.setDates_m1(dates);
-                           manger1_list.setToday_date(today_date);
-                           manger1_list.setApprove_m1("");
-                           manger1_list.setApprove_m2("");
-                           manger1_list.setReason(reason.getText().toString());
-                           manger1_list.setEmployee(dataSnapshot.child("employee").getValue().toString());
-                           manger1_list.setManager_m2(dataSnapshot.child("manager2").getValue().toString());
-                           manger1_list.setManager_m2_email(dataSnapshot.child("manager_m2_email").getValue().toString());
-                           ref_manager1.child(dataSnapshot.child("employee").getValue().toString()).setValue(manger1_list);
                             double days = Double.parseDouble(daysleft);
                             if(days > sum){
-                                sum = (days - sum);
-                                ref.child("daysleft").setValue(String.valueOf(sum));
-                            }
+                                ref.child("sum").setValue(String.valueOf(sum));
+
+                                    String manager1list_name = dataSnapshot.child("name").getValue().toString();
+                                    ref_manager1 = FirebaseDatabase.getInstance().getReference("Manger1_list");
+                                    manger1_list.setName_m1(manager1list_name);
+                                    manger1_list.setManager_m1_email(dataSnapshot.child("manager_m1_email").getValue().toString());
+                                    manger1_list.setManager_m1(dataSnapshot.child("manager1").getValue().toString());
+                                    manger1_list.setDates_m1(dates);
+                                    manger1_list.setToday_date(today_date);
+                                    manger1_list.setApprove_m1("");
+                                    manger1_list.setApprove_m2("");
+                                    manger1_list.setDate_day1(date_day1);
+                                    manger1_list.setReason(reason.getText().toString());
+                                    manger1_list.setEmployee(dataSnapshot.child("employee").getValue().toString());
+                                    manger1_list.setManager_m2(dataSnapshot.child("manager2").getValue().toString());
+                                    manger1_list.setManager_m2_email(dataSnapshot.child("manager_m2_email").getValue().toString());
+                                    ref_manager1.child(dataSnapshot.child("employee").getValue().toString()).setValue(manger1_list);
+                                }
                             else{
                                 Toast.makeText(Apply_for_leave.this,"Insufficient leaves",Toast.LENGTH_SHORT).show();
                             }
+
                         }
-
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                             Toast.makeText(Apply_for_leave.this,"Insufficient leaves",Toast.LENGTH_SHORT).show();

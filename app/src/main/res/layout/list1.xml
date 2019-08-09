@@ -5,7 +5,17 @@
     android:id="@+id/parent_layout"
     >
 
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/text"
+    android:text="EMERGENCY"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:textAlignment="center"
+    android:textColor="#ffffff"
+    android:background="#F00A0A"
+    />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

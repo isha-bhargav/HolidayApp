@@ -118,6 +118,7 @@ public class register extends AppCompatActivity {
                     member.setManager_m2_email("");
                     member.setApprove_m2("");
                     member.setApprove_m1("");
+                    member.setSum("0");
                     id = employeeID.getText().toString();
                     ref.child(id).setValue(member);
                     Intent intent=new Intent(register.this,Main3Activity.class);

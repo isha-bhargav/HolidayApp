@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.ViewHolder> {
     ArrayList<Manger1_list>list_manager2,l;
@@ -48,15 +51,28 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        String []arr1=list_manager2.get(position).getToday_date().split("/");
+        Calendar myNextCalender1 = Calendar.getInstance();
+        myNextCalender1.set(Integer.parseInt(arr1[0]), Integer.parseInt(arr1[1]) - 1, Integer.parseInt(arr1[2]));
+        Date nyd1 = myNextCalender1.getTime();
+        String []arr2=list_manager2.get(position).getDate_day1().split("/");
+        Calendar myNextCalender2 = Calendar.getInstance();
+        myNextCalender2.set(Integer.parseInt("20"+arr2[2]), Integer.parseInt(arr2[1]) - 1, Integer.parseInt(arr2[0]));
+        Date nyd2 = myNextCalender2.getTime();
+        if (Math.abs((nyd1.getTime()-nyd2.getTime())/86400000)<=2)
+            holder.t_display.setVisibility(View.VISIBLE);
+
         holder.t_name.setText(list_manager2.get(position).getName_m1());
         holder.t_date.setText(list_manager2.get(position).getDates_m1());
         holder.t_reason.setText(list_manager2.get(position).getReason());
+
 
         holder.bt_approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 reff_mem= FirebaseDatabase.getInstance().getReference("Member").child(list_manager2.get(position).getEmployee());
                 reff_manager2=FirebaseDatabase.getInstance().getReference("Manger2_list").child(list_manager2.get(position).getEmployee());
+
                 reff_manager2.child("approve_m2").setValue("ok");
                 reff_mem.child("approve_m2").setValue("ok");
                 reff_manager2.addValueEventListener(new ValueEventListener() {
@@ -71,6 +87,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                         manger1_list_manager1.setName_m1(dataSnapshot.child("name_m1").getValue().toString());
                         manger1_list_manager1.setDates_m1(dataSnapshot.child("dates_m1").getValue().toString());
                         manger1_list_manager1.setEmployee(dataSnapshot.child("employee").getValue().toString());
+                        Toast.makeText(context, "Approved", Toast.LENGTH_LONG).show();
 
                     }
 
@@ -101,7 +118,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView t_name,t_date,t_reason;
+        TextView t_name,t_date,t_reason,t_display;
         Button bt_approve,bt_reject;
         LinearLayout linearLayout;
 
@@ -113,6 +130,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
             t_reason=itemView.findViewById(R.id.t3);
             bt_approve=itemView.findViewById(R.id.b1);
             bt_reject=itemView.findViewById(R.id.b2);
+            t_display=itemView.findViewById(R.id.text);
             linearLayout=itemView.findViewById(R.id.parent_layout);
 
         }

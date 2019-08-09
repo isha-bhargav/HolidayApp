@@ -3,6 +3,7 @@ package com.example.holiday;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,6 +48,7 @@ public class Main2Activity extends AppCompatActivity {
         reg_btn=findViewById(R.id.reg_id);
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
+
         member = new Member();
         reff = FirebaseDatabase.getInstance().getReference().child("Member");
         reg_btn.setOnClickListener(new View.OnClickListener() {

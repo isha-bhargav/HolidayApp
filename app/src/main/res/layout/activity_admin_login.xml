@@ -13,7 +13,9 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:passwordToggleEnabled="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         >
         <EditText
             android:layout_width="match_parent"
@@ -25,9 +27,23 @@
             android:textSize="22sp"
             />
     </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="forgot password"
+        android:layout_marginLeft="270dp"
+        android:background="#ffffff"
+        android:padding="5dp"
+        android:id="@+id/bt_1"
+        android:layout_marginTop="5dp"
+        />
 <Button
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="login"
-    android:id="@+id/btn_id"/>
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:id="@+id/btn_id"
+    android:background="@drawable/button_rounded"/>
 </LinearLayout>

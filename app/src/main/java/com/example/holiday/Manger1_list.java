@@ -2,11 +2,12 @@ package com.example.holiday;
 
 public class Manger1_list {
    private String name_m1,manager_m1,manager_m1_email,dates_m1,today_date,manager_m2,manager_m2_email,approve_m1,
-    approve_m2,employee,reason;
+    approve_m2,employee,reason,date_day1;
     public Manger1_list()
     {}
     public Manger1_list(String name_m1,String manager_m1,String manager_m1_email,String dates_m1,String today_date
-    ,String manager_m2,String manager_m2_email,String approve_m1,String approve_m2,String employee,String reason)
+    ,String manager_m2,String manager_m2_email,String approve_m1,String approve_m2,String employee,String reason
+            ,String date_day1)
     {
         this.name_m1=name_m1;
         this.manager_m1=manager_m1;
@@ -19,7 +20,8 @@ public class Manger1_list {
         this.approve_m2=approve_m2;
         this.employee=employee;
         this.reason=reason;
-    }
+        this.date_day1=date_day1;
+       }
 
     public String getName_m1() {
         return name_m1;
@@ -108,4 +110,14 @@ public class Manger1_list {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
+    public String getDate_day1() {
+        return date_day1;
+    }
+
+    public void setDate_day1(String date_day1) {
+        this.date_day1 = date_day1;
+    }
+
+
 }

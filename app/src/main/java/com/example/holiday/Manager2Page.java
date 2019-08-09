@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,8 @@ public class Manager2Page extends AppCompatActivity {
     RecyclerView recyclerView;
     DatabaseReference db2;
     RecyclerAdapter_m2 recyclerAdapter_m2;
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,11 @@ public class Manager2Page extends AppCompatActivity {
         recyclerView=findViewById(R.id.recycler_m2);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db2 = FirebaseDatabase.getInstance().getReference("Manger2_list");
+        dialog=new ProgressDialog(Manager2Page.this);
+        dialog.setTitle(" Please wait");
+        dialog.setMessage("Loading...");
+        dialog.show();
+
         db2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -54,6 +62,7 @@ public class Manager2Page extends AppCompatActivity {
                         l2.add(manger1_list);
                     }
                 }
+                dialog.dismiss();
                 recyclerAdapter_m2=new RecyclerAdapter_m2(Manager2Page.this,l2);
                 recyclerView.setAdapter(recyclerAdapter_m2);
             }

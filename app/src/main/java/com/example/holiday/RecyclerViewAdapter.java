@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,14 +27,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements Filterable{
     static ArrayList<Member>list;
+    ArrayList<Member>searchlist;
     Context context;
     public RecyclerViewAdapter(Context context,ArrayList<Member>list)
     {
         this.context=context;
         this.list=list;
+        searchlist=new ArrayList<>(list);
+        Log.i("search","cons");
     }
 
     @NonNull
@@ -95,7 +101,49 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return list.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    @Override
+    public Filter getFilter() {
+        return searchFilter;
+    }
+    private  Filter searchFilter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<Member>filterlist=new ArrayList<>();
+            if (charSequence==null || charSequence.length()==0)
+            {
+                filterlist.addAll(searchlist);
+            }
+            else
+            {
+                {
+                    String filterPattern=charSequence.toString().toLowerCase().trim();
+                    for (Member item:searchlist)
+                    {
+                        if (item.getName().toLowerCase().contains(filterPattern))
+                        {
+                            filterlist.add(item);
+                        }
+                    }
+                }
+                FilterResults res=new FilterResults();
+                res.values=filterlist;
+                Log.i("search","7");
+                return res;
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            list.clear();
+            list.addAll((List)filterResults.values);
+            notifyDataSetChanged();
+            Log.i("search","8");
+        }
+    };
+
+    public  class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView tname,t_display;
         EditText edmanager1,edmanager2,ednumber,email_m1,email_m2;

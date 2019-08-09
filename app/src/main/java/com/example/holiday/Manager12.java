@@ -3,6 +3,7 @@ package com.example.holiday;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,13 +19,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Manager12 extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     EditText email_ed,pass_ed,confirm_ed,name_ed;
     Button reg_btn;
     static String name,email,pass,confirm;
-
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,9 @@ public class Manager12 extends AppCompatActivity {
         pass_ed=findViewById(R.id.pass_id);
         confirm_ed=findViewById(R.id.confirm_id);
         reg_btn=findViewById(R.id.reg_id);
+        dialog=new ProgressDialog(Manager12.this);
+        dialog.setTitle(" Please wait");
+        dialog.setMessage("Registering...");
         firebaseAuth=FirebaseAuth.getInstance();
         reg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,11 +79,13 @@ public class Manager12 extends AppCompatActivity {
                 }
                 if (pass.equals(confirm))
                 {
+                    dialog.show();
                     firebaseAuth.createUserWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(Manager12.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+                                        dialog.dismiss();
                                         Intent intent=new Intent(Manager12.this,Manager1.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
@@ -94,6 +101,7 @@ public class Manager12 extends AppCompatActivity {
                     confirm_ed.requestFocus();
                     return;
                 }
+
             }
         });
     }

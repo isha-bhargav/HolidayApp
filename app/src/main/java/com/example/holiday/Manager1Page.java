@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,11 +37,15 @@ public class Manager1Page extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerAdapter_m1 recyclerAdapter_m1;
     FirebaseUser user;
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager1_page);
-
+        dialog=new ProgressDialog(Manager1Page.this);
+        dialog.setTitle(" Please wait");
+        dialog.setMessage("Loading...");
+        dialog.show();
         l1=new ArrayList<>();
         user=FirebaseAuth.getInstance().getCurrentUser();
         recyclerView=findViewById(R.id.recycler_m1);
@@ -57,6 +62,7 @@ public class Manager1Page extends AppCompatActivity {
                         if (manger1_list.getApprove_m1().equals("") )
                         l1.add(manger1_list);
                     }
+                    dialog.dismiss();
                 }
 
                 recyclerAdapter_m1=new RecyclerAdapter_m1(Manager1Page.this,l1);
