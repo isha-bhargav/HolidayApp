@@ -2,7 +2,7 @@ package com.example.holiday;
 
 public class Member {
 
-  private String name,email,pass,manager1,manager2,daysleft,installmentleft,employee,manager_m1_email,manager_m2_email,approve_m1,approve_m2,sum;
+  private String name,pass,manager1,manager2,daysleft,installmentleft,employee,manager_m1_email,manager_m2_email,approve_m1,approve_m2,sum;
     public Member() {
     }
 
@@ -31,13 +31,13 @@ public class Member {
     }
 
 
-    public Member(String name, String email, String pass,
+    public Member(String name, String pass,
                   String manager1, String manager2, String daysleft,
                   String installmentleft, String employee,
                   String manager_m1_email,String manager_m2_email,String approve_m2,String approve_m1
     ,String sum) {
         this.name=name;
-        this.email=email;
+        //this.email=email;
         this.pass=pass;
         this.manager1=manager1;
         this.manager2=manager2;
@@ -58,14 +58,6 @@ public class Member {
     public void setName(String name) {
         this.name = name;
 
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPass() {

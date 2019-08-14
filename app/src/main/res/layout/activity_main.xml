@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:padding="5dp"
+        android:visibility="gone"
         android:src="@drawable/ic_account_circle_black_24dp"
         />
     <com.google.android.material.textfield.TextInputLayout
@@ -35,8 +36,8 @@
     android:layout_height="wrap_content"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:layout_marginTop="5dp"
-    >
+    android:visibility="gone"
+    android:layout_marginTop="5dp">
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,6 +46,7 @@
         android:id="@+id/email_id"
         android:inputType="textEmailAddress"
         android:textSize="22sp"
+        android:visibility="gone"
         />
 </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout

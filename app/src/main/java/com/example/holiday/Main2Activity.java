@@ -41,7 +41,7 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         //employee=new ArrayList<>();
-        email_ed=findViewById(R.id.email_id);
+        //email_ed=findViewById(R.id.email_id);
         name_ed=findViewById(R.id.name_id);
         pass_ed=findViewById(R.id.pass_id);
         confirm_ed=findViewById(R.id.confirm_id);
@@ -62,12 +62,6 @@ public class Main2Activity extends AppCompatActivity {
                 {
                     name_ed.setError("enter name");
                     name_ed.requestFocus();
-                    return;
-                }
-                if (TextUtils.isEmpty(email))
-                {
-                    email_ed.setError("enter email");
-                    email_ed.requestFocus();
                     return;
                 }
                 if (TextUtils.isEmpty(pass))
@@ -99,7 +93,7 @@ public class Main2Activity extends AppCompatActivity {
                                         //Log.i("log",Admin.employee.get(1).toString());
                                         name=name_ed.getText().toString().trim();
                                         member.setName(name);
-                                        member.setEmail(email_ed.getText().toString().trim());
+                                      //  member.setEmail(email_ed.getText().toString().trim());
                                         member.setPass(pass_ed.getText().toString().trim());
                                         member.setManager1("");
                                         member.setManager2("");

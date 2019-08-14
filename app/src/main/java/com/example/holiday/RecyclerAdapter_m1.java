@@ -38,8 +38,6 @@ public class RecyclerAdapter_m1 extends RecyclerView.Adapter<RecyclerAdapter_m1.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
         View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.list1,parent,false);
         RecyclerAdapter_m1.ViewHolder holder_m1=new RecyclerAdapter_m1.ViewHolder(v);
         return holder_m1;
@@ -78,9 +76,10 @@ public class RecyclerAdapter_m1 extends RecyclerView.Adapter<RecyclerAdapter_m1.
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         //String manger_m2=dataSnapshot.child("manager_m2").getValue().toString();
+                        reff_manager1.child("approve_m1").setValue("ok");
                         reff_manager2=FirebaseDatabase.getInstance().getReference("Manger2_list");
                         manger1_list_manager1.setReason(dataSnapshot.child("reason").getValue().toString());
-                        manger1_list_manager1.setApprove_m1(dataSnapshot.child("approve_m1").getValue().toString());
+                        manger1_list_manager1.setApprove_m1("ok");
                         manger1_list_manager1.setManager_m2_email(dataSnapshot.child("manager_m2_email").getValue().toString());
                         manger1_list_manager1.setManager_m2(dataSnapshot.child("manager_m2").getValue().toString());
                         manger1_list_manager1.setToday_date(dataSnapshot.child("today_date").getValue().toString());
@@ -92,7 +91,7 @@ public class RecyclerAdapter_m1 extends RecyclerView.Adapter<RecyclerAdapter_m1.
                         manger1_list_manager1.setDate_day1(dataSnapshot.child("date_day1").getValue().toString());
                         manger1_list_manager1.setManager_m1_email(dataSnapshot.child("manager_m1_email").getValue().toString());
                         reff_manager2.child(dataSnapshot.child("employee").getValue().toString()).setValue(manger1_list_manager1);
-                        Toast.makeText(context, "Approved", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Approved", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -110,6 +109,7 @@ public class RecyclerAdapter_m1 extends RecyclerView.Adapter<RecyclerAdapter_m1.
 
                 reff_mem= FirebaseDatabase.getInstance().getReference("Member").child(list_manager1.get(position).getEmployee());
                 reff_mem.child("approve_m1").setValue("no");
+                Toast.makeText(context, "Rejected", Toast.LENGTH_SHORT).show();
             }
         });
     }

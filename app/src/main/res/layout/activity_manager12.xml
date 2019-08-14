@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:padding="30dp"
+        android:visibility="gone"
         android:src="@drawable/ic_account_circle_black_24dp"
         />
     <com.google.android.material.textfield.TextInputLayout

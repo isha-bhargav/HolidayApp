@@ -13,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class employeeProfile extends AppCompatActivity {
-    TextView nameD,emailD,manager1D,manager2D;
+    TextView nameD,manager1D,manager2D;
     DatabaseReference ref;
     String id;
 
@@ -23,7 +23,7 @@ public class employeeProfile extends AppCompatActivity {
         setContentView(R.layout.activity_employee_profile);
 
         nameD = findViewById(R.id.name);
-        emailD = findViewById(R.id.email);
+       // emailD = findViewById(R.id.email);
         manager1D = findViewById(R.id.manager1);
         manager2D = findViewById(R.id.manager2);
 
@@ -38,12 +38,12 @@ public class employeeProfile extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 String name = dataSnapshot.child("name").getValue().toString();
-                String email = dataSnapshot.child("email").getValue().toString();
+               // String email = dataSnapshot.child("email").getValue().toString();
                 String manager1 = dataSnapshot.child("manager1").getValue().toString();
                 String manager2 = dataSnapshot.child("manager2").getValue().toString();
 
                 nameD.setText(" Name : " + name);
-                emailD.setText(" Email : " + email);
+                //emailD.setText(" Email : " + email);
                 manager1D.setText("Manager 1 : " + manager1);
                 manager2D.setText("Manager 2 : " + manager2);
             }

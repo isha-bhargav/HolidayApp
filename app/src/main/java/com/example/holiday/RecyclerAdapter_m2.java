@@ -28,9 +28,12 @@ import java.util.Date;
 public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.ViewHolder> {
     ArrayList<Manger1_list>list_manager2,l;
     Manger1_list manger1_list_manager1;
-    DatabaseReference reff_mem,reff_manager2;
+    DatabaseReference reff_mem,reff_manager2,mem_ref;
     FirebaseUser user;
     Context context;
+    String name_db,pass_db,email_db,manager1_db,manager2_db,manager_m1_email_db,
+    manager_m2_email_db,daysleft_db,installment_db,sum_db,employee_db,approve_m1_db,approve_m2_db;
+    Member member;
     public RecyclerAdapter_m2(Context context,ArrayList<Manger1_list>list_manager2)
     {
         this.context=context;
@@ -38,6 +41,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
         manger1_list_manager1=new Manger1_list();
         l=new ArrayList<>();
         user= FirebaseAuth.getInstance().getCurrentUser();
+        member=new Member();
     }
 
     @NonNull
@@ -52,13 +56,16 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         String []arr1=list_manager2.get(position).getToday_date().split("/");
+        Log.i("date_2",arr1[0]);Log.i("date_2",arr1[1]);Log.i("date_2",arr1[2]);
         Calendar myNextCalender1 = Calendar.getInstance();
         myNextCalender1.set(Integer.parseInt(arr1[0]), Integer.parseInt(arr1[1]) - 1, Integer.parseInt(arr1[2]));
         Date nyd1 = myNextCalender1.getTime();
         String []arr2=list_manager2.get(position).getDate_day1().split("/");
         Calendar myNextCalender2 = Calendar.getInstance();
-        myNextCalender2.set(Integer.parseInt("20"+arr2[2]), Integer.parseInt(arr2[1]) - 1, Integer.parseInt(arr2[0]));
+        Log.i("date_2","1:  "+arr2[0]);Log.i("date_2","1 :  "+arr2[1]);Log.i("date_2","1 :"+arr2[2]);
+        myNextCalender2.set(Integer.parseInt(arr2[2]), Integer.parseInt(arr2[1]) - 1, Integer.parseInt(arr2[0]));
         Date nyd2 = myNextCalender2.getTime();
+        Log.i("date_2",String.valueOf(Math.abs((nyd1.getTime()-nyd2.getTime())/86400000)));
         if (Math.abs((nyd1.getTime()-nyd2.getTime())/86400000)<=2)
             holder.t_display.setVisibility(View.VISIBLE);
 
@@ -72,12 +79,13 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
             public void onClick(View view) {
                 reff_mem= FirebaseDatabase.getInstance().getReference("Member").child(list_manager2.get(position).getEmployee());
                 reff_manager2=FirebaseDatabase.getInstance().getReference("Manger2_list").child(list_manager2.get(position).getEmployee());
-
+                mem_ref=FirebaseDatabase.getInstance().getReference().child("Member");
                 reff_manager2.child("approve_m2").setValue("ok");
                 reff_mem.child("approve_m2").setValue("ok");
                 reff_manager2.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        reff_manager2.child("approve_m2").setValue("ok");
                         manger1_list_manager1.setReason(dataSnapshot.child("reason").getValue().toString());
                         manger1_list_manager1.setApprove_m1(dataSnapshot.child("approve_m1").getValue().toString());
                         manger1_list_manager1.setManager_m2_email(dataSnapshot.child("manager_m2_email").getValue().toString());
@@ -88,7 +96,6 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                         manger1_list_manager1.setDates_m1(dataSnapshot.child("dates_m1").getValue().toString());
                         manger1_list_manager1.setEmployee(dataSnapshot.child("employee").getValue().toString());
                         Toast.makeText(context, "Approved", Toast.LENGTH_LONG).show();
-
                     }
 
                     @Override
@@ -97,6 +104,56 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                     }
                 });
 
+                reff_mem.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        name_db=dataSnapshot.child("name").getValue().toString();
+                       // email_db=dataSnapshot.child("email").getValue().toString();
+                        pass_db=dataSnapshot.child("pass").getValue().toString();
+                        manager1_db=dataSnapshot.child("manager1").getValue().toString();
+                        manager2_db=dataSnapshot.child("manager2").getValue().toString();
+                        manager_m1_email_db=dataSnapshot.child("manager_m1_email").getValue().toString();
+                        manager_m2_email_db=dataSnapshot.child("manager_m2_email").getValue().toString();
+                        daysleft_db=String.valueOf(Double.parseDouble(dataSnapshot.child("daysleft").getValue().toString())-
+                                Double.parseDouble(dataSnapshot.child("sum").getValue().toString()));
+                        installment_db=String.valueOf(Integer.parseInt(dataSnapshot.child("installmentleft").getValue().toString())-1);
+                        approve_m1_db=dataSnapshot.child("approve_m1").getValue().toString();
+                        approve_m2_db=dataSnapshot.child("approve_m2").getValue().toString();
+                        employee_db=dataSnapshot.child("employee").getValue().toString();
+                        member.setName(name_db);
+                        member.setApprove_m2(approve_m2_db);
+                        member.setPass(pass_db);
+                        member.setDaysleft(daysleft_db);
+                        member.setSum("0");
+                        member.setApprove_m1(approve_m1_db);
+                       // member.setEmail(email_db);
+                        member.setManager_m2_email(manager_m2_email_db);
+                        member.setManager_m1_email(manager_m1_email_db);
+                        member.setManager1(manager1_db);
+                        member.setManager2(manager2_db);
+                        member.setInstallmentleft(installment_db);
+                        member.setEmployee(employee_db);
+                        reff_mem.removeValue();
+                       // mem_ref.child(employee_db).setValue(member);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+               mem_ref.addValueEventListener(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                       mem_ref.child(employee_db).setValue(member);
+                   }
+
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                   }
+               }) ;
+
+                Toast.makeText(context, "Approved", Toast.LENGTH_SHORT).show();
             }
         });
         holder.bt_reject.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +163,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                 reff_manager2=FirebaseDatabase.getInstance().getReference("Manger2_list").child(list_manager2.get(position).getEmployee());
                 reff_manager2.child("approve_m2").setValue("no");
                 reff_mem.child("approve_m2").setValue("no");
+                Toast.makeText(context, "Rejected", Toast.LENGTH_SHORT).show();
                             }
         });
 

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
    EditText employeeID, email_id, pass_id;
     Button reg_id, log_id;
     String id;
-    String email, pass;
+    String email, pass,employee_id;
     DatabaseReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         employeeID = findViewById(R.id.employee_id);
-        email_id = findViewById(R.id.email_id);
+      //  email_id = findViewById(R.id.email_id);
         pass_id = findViewById(R.id.pass_id);
 
         reg_id=findViewById(R.id.reg_id);
@@ -53,25 +53,43 @@ public class MainActivity extends AppCompatActivity {
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(employeeID.getText().toString()).exists()) {
-                            email = dataSnapshot.child(employeeID.getText().toString()).child("email").getValue().toString();
-                            pass = dataSnapshot.child(employeeID.getText().toString()).child("pass").getValue().toString();
-                            Toast.makeText(MainActivity.this, "ID match", Toast.LENGTH_SHORT).show();
+                        for (DataSnapshot ds:dataSnapshot.getChildren())
 
-                            if(email_id.getText().toString().equals(email)  /*&&pass.equals(pass_id.getText().toString())*/){
-                                Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(MainActivity.this,Main3Activity.class);
+                        if(ds.child("employee").getValue().toString().equals(employeeID.getText().toString())) {
+                           // email = dataSnapshot.child(employeeID.getText().toString()).child("email").getValue().toString();
+                            //pass = dataSnapshot.child(employeeID.getText().toString()).child("pass").getValue().toString();
+
+                            //Toast.makeText(MainActivity.this, "ID match", Toast.LENGTH_SHORT).show();
+                           // if (dataSnapshot.child("employee").equals(employeeID.getText().toString()))
+                            /// if(email_id.getText().toString().equals(email)  /*&&pass.equals(pass_id.getText().toString())*/){
+                            /**   Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT).show();
+                             Intent intent = new Intent(MainActivity.this,Main3Activity.class);
+                             Bundle bundle = new Bundle();
+                             bundle.putString("id",employeeID.getText().toString());
+                             intent.putExtras(bundle);
+                             startActivity(intent);*/
+                            //}
+
+                            //   else{
+                            //     Toast.makeText(MainActivity.this,"Enter Valid Credentials",Toast.LENGTH_SHORT).show();
+                            //}
+                            pass=ds.child("pass").getValue().toString();
+                            employee_id=ds.child("employee").toString();
+                            if (pass_id.getText().toString().equals(pass))
+                            {
+                                Toast.makeText(MainActivity.this,"Logged in",Toast.LENGTH_SHORT).show();
+                                 Intent intent = new Intent(MainActivity.this,Main3Activity.class);
                                 Bundle bundle = new Bundle();
                                 bundle.putString("id",employeeID.getText().toString());
                                 intent.putExtras(bundle);
                                 startActivity(intent);
+
                             }
-                            else{
-                                Toast.makeText(MainActivity.this,"Enter Valid Credentials",Toast.LENGTH_SHORT).show();
-                            }
+                            else
+                                Toast.makeText(MainActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(MainActivity.this,"Not exist",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,"Wrong credentials",Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override

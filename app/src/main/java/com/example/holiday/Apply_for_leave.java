@@ -32,18 +32,26 @@ public class Apply_for_leave extends AppCompatActivity {
     Manger1_list manger1_list;
     EditText date_1, date_2, date_3, date_4, date_5, date_6,reason ;
     Button applyleave;
-    String points,today_date,date_day1;
-    String daysleft,dates="";
-    double sum;
+    Member member;
+    FirebaseDatabase database;
+
+    String today_date,date_day1;
+    String dates="",get;
+    double sum=0;
+    String sumtxt;
     RadioGroup radio_1, radio_2, radio_3, radio_4, radio_5, radio_6;
     RadioButton radioLeave1, radioLeave2, radioLeave3, radioLeave4, radioLeave5, radioLeave6;
     DatabaseReference ref,ref_manager1;
+    final Calendar leaveCalender = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply_for_leave);
+
         today_date= new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(new Date()).toString();
+        member = new Member();
+
         manger1_list=new Manger1_list();
         date_1 = findViewById(R.id.date_1);
         date_2 = findViewById(R.id.date_2);
@@ -71,85 +79,120 @@ public class Apply_for_leave extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         final String id = bundle.getString("id");
 
-        final Calendar leaveCalender = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        final DatePickerDialog.OnDateSetListener date1 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int date) {
                 leaveCalender.set(Calendar.YEAR,year);
                 leaveCalender.set(Calendar.MONTH,month);
                 leaveCalender.set(Calendar.DAY_OF_MONTH, date);
+                label1();
+
+            }
+        };
+
+        final DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                leaveCalender.set(Calendar.YEAR,year);
+                leaveCalender.set(Calendar.MONTH,month);
+                leaveCalender.set(Calendar.DAY_OF_MONTH, date);
+                label2();
+            }
+        };
+
+        final DatePickerDialog.OnDateSetListener date3 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                leaveCalender.set(Calendar.YEAR,year);
+                leaveCalender.set(Calendar.MONTH,month);
+                leaveCalender.set(Calendar.DAY_OF_MONTH, date);
+                label3();
+            }
+        };
+        final DatePickerDialog.OnDateSetListener date4 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                leaveCalender.set(Calendar.YEAR,year);
+                leaveCalender.set(Calendar.MONTH,month);
+                leaveCalender.set(Calendar.DAY_OF_MONTH, date);
+                label4();
+            }
+        };
+
+        final DatePickerDialog.OnDateSetListener date5 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                leaveCalender.set(Calendar.YEAR,year);
+                leaveCalender.set(Calendar.MONTH,month);
+                leaveCalender.set(Calendar.DAY_OF_MONTH, date);
+                label5();
+            }
+        };
+
+        final DatePickerDialog.OnDateSetListener date6 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                leaveCalender.set(Calendar.YEAR,year);
+                leaveCalender.set(Calendar.MONTH,month);
+                leaveCalender.set(Calendar.DAY_OF_MONTH, date);
+                label6();
             }
         };
         date_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(Apply_for_leave.this, date, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
-                String myFormat = "dd/MM/yyyy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                date_1.setText(sdf.format(leaveCalender.getTime()));
+                new DatePickerDialog(Apply_for_leave.this, date1, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
+
                 radio_1.setVisibility(View.VISIBLE);
-                date_day1=sdf.format(leaveCalender.getTime());
-                dates+="1st day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";}
+
+            }
 
         });
 
         date_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(Apply_for_leave.this, date, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
-                String myFormat = "dd/MM/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                new DatePickerDialog(Apply_for_leave.this, date2, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
+
                 radio_2.setVisibility(View.VISIBLE);
-                date_2.setText(sdf.format(leaveCalender.getTime()));
-                dates+="2nd day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+
             }
         });
 
         date_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(Apply_for_leave.this, date, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
-                String myFormat = "dd/MM/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                new DatePickerDialog(Apply_for_leave.this, date3, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
+
                 radio_3.setVisibility(View.VISIBLE);
-                date_3.setText(sdf.format(leaveCalender.getTime()));
-                dates+="3rd day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+
             }
         });
 
         date_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(Apply_for_leave.this, date, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
-                String myFormat = "dd/MM/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                date_4.setText(sdf.format(leaveCalender.getTime()));
+                new DatePickerDialog(Apply_for_leave.this, date4, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
+                ;
                 radio_4.setVisibility(View.VISIBLE);
-                dates+="4th day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+
             }
         });
 
         date_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(Apply_for_leave.this, date, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
-                String myFormat = "dd/MM/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                new DatePickerDialog(Apply_for_leave.this, date5, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
                 radio_5.setVisibility(View.VISIBLE);
-                date_5.setText(sdf.format(leaveCalender.getTime()));
-                dates+="5th day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+
             }
         });
 
         date_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(Apply_for_leave.this, date, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
-                String myFormat = "dd/MM/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                new DatePickerDialog(Apply_for_leave.this, date6, leaveCalender.get(Calendar.YEAR), leaveCalender.get(Calendar.MONTH), leaveCalender.get(Calendar.DAY_OF_MONTH)).show();
                 radio_6.setVisibility(View.VISIBLE);
-                date_6.setText(sdf.format(leaveCalender.getTime()));
-                dates+="6th day: "+leaveCalender.getTime().toString().substring(0,1)+"\n";
             }
         });
 
@@ -166,38 +209,42 @@ public class Apply_for_leave extends AppCompatActivity {
                 checkdate5();
                 checkdate6();
                 calculate();
+
                 if(reason.getText().toString().length() > 0){
-                    ref = FirebaseDatabase.getInstance().getReference().child("Member").child(id);
+                    database = FirebaseDatabase.getInstance();
+                    ref_manager1 = database.getReference().child("Manger1_list");
+                    ref = database.getReference().child("Member").child(id);
                     ref.child("approve_m1").setValue("");
                     ref.child("approve_m2").setValue("");
+
                     ref.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            daysleft = dataSnapshot.child("daysleft").getValue().toString();
-
-                            double days = Double.parseDouble(daysleft);
-                            if(days > sum){
-                                ref.child("sum").setValue(String.valueOf(sum));
-
-                                    String manager1list_name = dataSnapshot.child("name").getValue().toString();
-                                    ref_manager1 = FirebaseDatabase.getInstance().getReference("Manger1_list");
-                                    manger1_list.setName_m1(manager1list_name);
-                                    manger1_list.setManager_m1_email(dataSnapshot.child("manager_m1_email").getValue().toString());
-                                    manger1_list.setManager_m1(dataSnapshot.child("manager1").getValue().toString());
-                                    manger1_list.setDates_m1(dates);
-                                    manger1_list.setToday_date(today_date);
-                                    manger1_list.setApprove_m1("");
-                                    manger1_list.setApprove_m2("");
-                                    manger1_list.setDate_day1(date_day1);
-                                    manger1_list.setReason(reason.getText().toString());
-                                    manger1_list.setEmployee(dataSnapshot.child("employee").getValue().toString());
-                                    manger1_list.setManager_m2(dataSnapshot.child("manager2").getValue().toString());
-                                    manger1_list.setManager_m2_email(dataSnapshot.child("manager_m2_email").getValue().toString());
-                                    ref_manager1.child(dataSnapshot.child("employee").getValue().toString()).setValue(manger1_list);
-                                }
-                            else{
-                                Toast.makeText(Apply_for_leave.this,"Insufficient leaves",Toast.LENGTH_SHORT).show();
-                            }
+                           // Log.d("Error checking", "" + dataSnapshot.getValue());
+                            //Log.d("Sum null error", "" + sum);
+                            sumtxt = String.valueOf(sum);
+                           // Log.d("Sum null error --------", "" + sumtxt);
+                            ref.child("sum").setValue(sumtxt);
+                            Log.d("Sum null error @-0-0-", "" + sumtxt);
+                            String manager1list_name = dataSnapshot.child("name").getValue().toString();
+                            String manager1mail = dataSnapshot.child("manager_m1_email").getValue().toString();
+                            String manager2mail = dataSnapshot.child("manager_m2_email").getValue().toString();
+                            String manager1 = dataSnapshot.child("manager1").getValue().toString();
+                            String manager2= dataSnapshot.child("manager2").getValue().toString();
+                            String employee= dataSnapshot.child("employee").getValue().toString();
+                            manger1_list.setName_m1(manager1list_name);
+                            manger1_list.setManager_m1_email(manager1mail);
+                            manger1_list.setManager_m1(manager1);
+                            manger1_list.setDates_m1(dates);
+                            manger1_list.setToday_date(today_date);
+                            manger1_list.setApprove_m1("");
+                            manger1_list.setApprove_m2("");
+                            manger1_list.setDate_day1(date_day1);
+                            manger1_list.setReason(reason.getText().toString());
+                            manger1_list.setEmployee(employee);
+                            manger1_list.setManager_m2(manager2);
+                            manger1_list.setManager_m2_email(manager2mail);
+                            ref_manager1.child(id).setValue(manger1_list);
 
                         }
                         @Override
@@ -207,19 +254,61 @@ public class Apply_for_leave extends AppCompatActivity {
                         }
                     });
 
-                    Intent intent=new Intent(Apply_for_leave.this,Main3Activity.class);
+                    /*Intent intent=new Intent(Apply_for_leave.this,Main3Activity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);*/
                     Toast.makeText(Apply_for_leave.this,"Success",Toast.LENGTH_SHORT).show();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("points", points);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
                     finish();
                 }
 
             }
         });
     }
+    private void label1(){
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        date_1.setText(sdf.format(leaveCalender.getTime()));
+        date_day1 = sdf.format(leaveCalender.getTime());
+        //dates+="1st day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+    }
+
+    private void label2(){
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        date_2.setText(sdf.format(leaveCalender.getTime()));
+        //dates+="2nd day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+    }
+
+    private void label3(){
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        date_3.setText(sdf.format(leaveCalender.getTime()));
+        //dates+="3rd day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+    }
+
+    private void label4(){
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        date_4.setText(sdf.format(leaveCalender.getTime()));
+       // dates+="4th day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+    }
+
+    private void label5(){
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        date_5.setText(sdf.format(leaveCalender.getTime()));
+       // dates+="5th day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+    }
+
+    private void label6(){
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        date_6.setText(sdf.format(leaveCalender.getTime()));
+       // dates+="6th day: "+leaveCalender.getTime().toString().substring(0,10)+"\n";
+    }
+
+
+
     public void  checkdate1(){
         if(date_1.getText().toString().length() > 0) {
             int selectedID = radio_1.getCheckedRadioButtonId();
@@ -268,10 +357,11 @@ public class Apply_for_leave extends AppCompatActivity {
         //1st date
         if(date_1.getText().length() > 0)
         {
+            String radioT1 = String.valueOf(radioLeave1.getText());
+            dates+=" 1st day: " + date_1.getText().toString() + "-" + radioT1;
             if (radioLeave1.getText().length() == 5)
             {
                 Short++;
-
             }
             else if (radioLeave1.getText().length() == 9)
             {
@@ -289,6 +379,8 @@ public class Apply_for_leave extends AppCompatActivity {
 
         //2nd date
         if(date_2.getText().length() > 0) {
+            dates+=" 2nd day: " + date_2.getText().toString() + "-" + radioLeave2.getText().toString();
+
             if (radioLeave2.getText().length() == 5) {
                 Short++;
             } else if (radioLeave2.getText().length() == 9) {
@@ -301,6 +393,8 @@ public class Apply_for_leave extends AppCompatActivity {
         }
         //3rd date
         if(date_3.getText().length() > 0) {
+            dates+=" 3rd day: " + date_3.getText().toString() + "-" + radioLeave3.getText().toString();
+
             if (radioLeave3.getText().length() == 5) {
                 Short++;
             } else if (radioLeave3.getText().length() == 9) {
@@ -313,6 +407,8 @@ public class Apply_for_leave extends AppCompatActivity {
         }
 
         if(date_4.getText().length() > 0) {
+            dates+=" 4th day: " + date_4.getText().toString() + "-" + radioLeave4.getText().toString();
+
             if (radioLeave4.getText().length() == 5) {
                 Short++;
             } else if (radioLeave4.getText().length() == 9) {
@@ -324,6 +420,8 @@ public class Apply_for_leave extends AppCompatActivity {
             }
         }
         if(date_5.getText().length() > 0) {
+            dates+=" 5th day: " + date_5.getText().toString() + "-" + radioLeave5.getText().toString();
+
             if (radioLeave5.getText().length() == 5) {
                 Short++;
             } else if (radioLeave5.getText().length() == 9) {
@@ -335,6 +433,8 @@ public class Apply_for_leave extends AppCompatActivity {
             }
         }
         if(date_6.getText().length() > 0) {
+            dates+=" 6th day: " + date_6.getText().toString() + "-" + radioLeave6.getText().toString();
+
             if (radioLeave6.getText().length() == 5) {
                 Short++;
             } else if (radioLeave6.getText().length() == 9) {
@@ -342,13 +442,12 @@ public class Apply_for_leave extends AppCompatActivity {
             } else if (radioLeave6.getText().length() == 8) {
                 full++;
             } else {
-
             }
         }
 
         sum = (full) + (half * 0.5) + (Short*0.25);
-
+        Log.d("Calculate", " " + sum);
         Toast.makeText(Apply_for_leave.this, " Full day " + full + " \n Half Day " + half + "\n Short " + Short,Toast.LENGTH_SHORT).show();
-
     }
+
 }

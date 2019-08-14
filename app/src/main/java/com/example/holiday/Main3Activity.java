@@ -41,22 +41,19 @@ public class Main3Activity extends AppCompatActivity {
         final String id = bundle.getString("id");
         Toast.makeText(Main3Activity.this," " + id, Toast.LENGTH_SHORT).show();
 
-        ref = FirebaseDatabase.getInstance().getReference().child("Member").child(id);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String daysleft = dataSnapshot.child("daysleft").getValue().toString();
-                String name = dataSnapshot.child("name").getValue().toString();
+       ref = FirebaseDatabase.getInstance().getReference().child("Member").child(id);
+       ref.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               daysLefts.setText(dataSnapshot.child("daysleft").getValue().toString());
+               installment_left.setText(dataSnapshot.child("installmentleft").getValue().toString());
+           }
 
-                daysLefts.setText(daysleft);
-                id.equals(name);
-            }
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+           }
+       });
 
         apply.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -15,6 +15,7 @@
     android:textAlignment="center"
     android:textColor="#ffffff"
     android:background="#F00A0A"
+    android:visibility="gone"
     />
     <TextView
         android:layout_width="match_parent"
