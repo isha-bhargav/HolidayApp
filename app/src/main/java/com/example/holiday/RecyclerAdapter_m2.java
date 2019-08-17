@@ -1,6 +1,7 @@
 package com.example.holiday;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
     String name_db,pass_db,email_db,manager1_db,manager2_db,manager_m1_email_db,
     manager_m2_email_db,daysleft_db,installment_db,sum_db,employee_db,approve_m1_db,approve_m2_db;
     Member member;
+    String dates;
     public RecyclerAdapter_m2(Context context,ArrayList<Manger1_list>list_manager2)
     {
         this.context=context;
@@ -93,7 +95,8 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                         manger1_list_manager1.setToday_date(dataSnapshot.child("today_date").getValue().toString());
                         manger1_list_manager1.setManager_m1(dataSnapshot.child("manager_m1").getValue().toString());
                         manger1_list_manager1.setName_m1(dataSnapshot.child("name_m1").getValue().toString());
-                        manger1_list_manager1.setDates_m1(dataSnapshot.child("dates_m1").getValue().toString());
+                        dates=dataSnapshot.child("dates_m1").getValue().toString();
+                        manger1_list_manager1.setDates_m1(dates);
                         manger1_list_manager1.setEmployee(dataSnapshot.child("employee").getValue().toString());
                         Toast.makeText(context, "Approved", Toast.LENGTH_LONG).show();
                     }
@@ -108,7 +111,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         name_db=dataSnapshot.child("name").getValue().toString();
-                       // email_db=dataSnapshot.child("email").getValue().toString();
+                        email_db=dataSnapshot.child("email").getValue().toString();
                         pass_db=dataSnapshot.child("pass").getValue().toString();
                         manager1_db=dataSnapshot.child("manager1").getValue().toString();
                         manager2_db=dataSnapshot.child("manager2").getValue().toString();
@@ -126,7 +129,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                         member.setDaysleft(daysleft_db);
                         member.setSum("0");
                         member.setApprove_m1(approve_m1_db);
-                       // member.setEmail(email_db);
+                        member.setEmail(email_db);
                         member.setManager_m2_email(manager_m2_email_db);
                         member.setManager_m1_email(manager_m1_email_db);
                         member.setManager1(manager1_db);
@@ -154,6 +157,7 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                }) ;
 
                 Toast.makeText(context, "Approved", Toast.LENGTH_SHORT).show();
+                sendMail_approve();
             }
         });
         holder.bt_reject.setOnClickListener(new View.OnClickListener() {
@@ -164,11 +168,61 @@ public class RecyclerAdapter_m2 extends RecyclerView.Adapter<RecyclerAdapter_m2.
                 reff_manager2.child("approve_m2").setValue("no");
                 reff_mem.child("approve_m2").setValue("no");
                 Toast.makeText(context, "Rejected", Toast.LENGTH_SHORT).show();
+                sendMail_reject();
                             }
         });
 
     }
 
+    private void sendMail_approve()
+    {
+        reff_mem.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String r=dataSnapshot.child("email").getValue().toString();
+                String subject="Application Approval";
+                String []recipients=r.split(",");
+                String message="Your application has been approved for "+dates;
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL,recipients);
+                intent.putExtra(Intent.EXTRA_SUBJECT,subject);
+                intent.putExtra(Intent.EXTRA_TEXT,message);
+                intent.setType("message/rfc822");
+                context.startActivity(Intent.createChooser(intent,"choose an email client"));
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void sendMail_reject()
+    {
+        reff_mem.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String r=dataSnapshot.child("email").getValue().toString();
+                String subject="Application Approval";
+                String []recipients=r.split(",");
+                String message="Your application has been rejected for "+dates;
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL,recipients);
+                intent.putExtra(Intent.EXTRA_SUBJECT,subject);
+                intent.putExtra(Intent.EXTRA_TEXT,message);
+                intent.setType("message/rfc822");
+                context.startActivity(Intent.createChooser(intent,"choose an email client"));
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
     @Override
     public int getItemCount() {
         return list_manager2.size();

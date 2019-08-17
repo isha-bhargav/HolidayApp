@@ -46,7 +46,6 @@
         android:id="@+id/email_id"
         android:inputType="textEmailAddress"
         android:textSize="22sp"
-        android:visibility="gone"
         />
 </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout

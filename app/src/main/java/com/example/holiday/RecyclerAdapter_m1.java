@@ -1,6 +1,7 @@
 package com.example.holiday;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class RecyclerAdapter_m1 extends RecyclerView.Adapter<RecyclerAdapter_m1.
     Manger1_list manger1_list_manager1;
     DatabaseReference reff_manager1,reff_mem,reff_manager2;
     Context context;
+    String dates;
     public  RecyclerAdapter_m1(Context context,ArrayList<Manger1_list>list_manager1)
     {
         this.context=context;
@@ -85,13 +87,15 @@ public class RecyclerAdapter_m1 extends RecyclerView.Adapter<RecyclerAdapter_m1.
                         manger1_list_manager1.setToday_date(dataSnapshot.child("today_date").getValue().toString());
                         manger1_list_manager1.setManager_m1(dataSnapshot.child("manager_m1").getValue().toString());
                         manger1_list_manager1.setName_m1(dataSnapshot.child("name_m1").getValue().toString());
-                        manger1_list_manager1.setDates_m1(dataSnapshot.child("dates_m1").getValue().toString());
+                        dates=dataSnapshot.child("dates_m1").getValue().toString();
+                        manger1_list_manager1.setDates_m1(dates);
                         manger1_list_manager1.setApprove_m2(dataSnapshot.child("approve_m2").getValue().toString());
                         manger1_list_manager1.setEmployee(dataSnapshot.child("employee").getValue().toString());
                         manger1_list_manager1.setDate_day1(dataSnapshot.child("date_day1").getValue().toString());
                         manger1_list_manager1.setManager_m1_email(dataSnapshot.child("manager_m1_email").getValue().toString());
                         reff_manager2.child(dataSnapshot.child("employee").getValue().toString()).setValue(manger1_list_manager1);
                         Toast.makeText(context, "Approved", Toast.LENGTH_SHORT).show();
+                        sendMail_approve();
                     }
 
                     @Override
@@ -110,12 +114,62 @@ public class RecyclerAdapter_m1 extends RecyclerView.Adapter<RecyclerAdapter_m1.
                 reff_mem= FirebaseDatabase.getInstance().getReference("Member").child(list_manager1.get(position).getEmployee());
                 reff_mem.child("approve_m1").setValue("no");
                 Toast.makeText(context, "Rejected", Toast.LENGTH_SHORT).show();
+                sendMail_reject();
             }
         });
     }
 
+    private void sendMail_reject()
+    {
+        reff_mem.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String r=dataSnapshot.child("email").getValue().toString();
+               // String name=dataSnapshot.child("name").getValue().toString();
+                String subject="Application Rejected";
+                String []recipients=r.split(",");
+                String message="Your application has been rejected for "+dates;
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL,recipients);
+                intent.putExtra(Intent.EXTRA_SUBJECT,subject);
+                intent.putExtra(Intent.EXTRA_TEXT,message);
+                intent.setType("message/rfc822");
+                context.startActivity(Intent.createChooser(intent,"choose an email client"));
 
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+        private  void sendMail_approve()
+        {
+           reff_mem.addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                   String r=dataSnapshot.child("manager_m2_email").getValue().toString();
+                   String name=dataSnapshot.child("name").getValue().toString();
+                   String subject="Application approval";
+                   String []recipients=r.split(",");
+                   String message="I "+name+" needs a leave for "+dates;
+                   Intent intent=new Intent(Intent.ACTION_SEND);
+                   intent.putExtra(Intent.EXTRA_EMAIL,recipients);
+                   intent.putExtra(Intent.EXTRA_SUBJECT,subject);
+                   intent.putExtra(Intent.EXTRA_TEXT,message);
+                   intent.setType("message/rfc822");
+                   context.startActivity(Intent.createChooser(intent,"choose an email client"));
+
+               }
+
+               @Override
+               public void onCancelled(@NonNull DatabaseError databaseError) {
+
+               }
+           });
+        }
     @Override
     public int getItemCount() {
         return list_manager1.size();

@@ -34,6 +34,7 @@ public class Apply_for_leave extends AppCompatActivity {
     Button applyleave;
     Member member;
     FirebaseDatabase database;
+    String manager1list_name;
 
     String today_date,date_day1;
     String dates="",get;
@@ -43,7 +44,7 @@ public class Apply_for_leave extends AppCompatActivity {
     RadioButton radioLeave1, radioLeave2, radioLeave3, radioLeave4, radioLeave5, radioLeave6;
     DatabaseReference ref,ref_manager1;
     final Calendar leaveCalender = Calendar.getInstance();
-
+    String recipient,sender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,8 @@ public class Apply_for_leave extends AppCompatActivity {
 
         today_date= new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(new Date()).toString();
         member = new Member();
-
+        recipient="";
+        sender="";
         manger1_list=new Manger1_list();
         date_1 = findViewById(R.id.date_1);
         date_2 = findViewById(R.id.date_2);
@@ -226,12 +228,15 @@ public class Apply_for_leave extends AppCompatActivity {
                            // Log.d("Sum null error --------", "" + sumtxt);
                             ref.child("sum").setValue(sumtxt);
                             Log.d("Sum null error @-0-0-", "" + sumtxt);
-                            String manager1list_name = dataSnapshot.child("name").getValue().toString();
+                            manager1list_name = dataSnapshot.child("name").getValue().toString();
                             String manager1mail = dataSnapshot.child("manager_m1_email").getValue().toString();
                             String manager2mail = dataSnapshot.child("manager_m2_email").getValue().toString();
                             String manager1 = dataSnapshot.child("manager1").getValue().toString();
                             String manager2= dataSnapshot.child("manager2").getValue().toString();
                             String employee= dataSnapshot.child("employee").getValue().toString();
+                            recipient=dataSnapshot.child("manager_m1_email").getValue().toString();
+                           // Log.i("reci",recipient.toString());
+                            sender=dataSnapshot.child("email").getValue().toString();
                             manger1_list.setName_m1(manager1list_name);
                             manger1_list.setManager_m1_email(manager1mail);
                             manger1_list.setManager_m1(manager1);
@@ -260,7 +265,7 @@ public class Apply_for_leave extends AppCompatActivity {
                     Toast.makeText(Apply_for_leave.this,"Success",Toast.LENGTH_SHORT).show();
                     finish();
                 }
-
+                    sendMail();
             }
         });
     }
@@ -449,5 +454,30 @@ public class Apply_for_leave extends AppCompatActivity {
         Log.d("Calculate", " " + sum);
         Toast.makeText(Apply_for_leave.this, " Full day " + full + " \n Half Day " + half + "\n Short " + Short,Toast.LENGTH_SHORT).show();
     }
+    private  void sendMail()
+    {
+       // String r;
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               String r=dataSnapshot.child("manager_m1_email").getValue().toString();
+                String subject="Application approval";
+                String []recipients=r.split(",");
+                String message="I "+manager1list_name+" needs a leave for "+dates;
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL,recipients);
+                intent.putExtra(Intent.EXTRA_SUBJECT,subject);
+                intent.putExtra(Intent.EXTRA_TEXT,message);
+                intent.setType("message/rfc822");
+                startActivity(Intent.createChooser(intent,"choose an email client"));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        }
 
 }

@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(MainActivity.this,"Wrong credentials",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(MainActivity.this,"Wrong credentials",Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(MainActivity.this,"Not exist",Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(MainActivity.this,"Not exist",Toast.LENGTH_SHORT).show();
 
                     }
                 });

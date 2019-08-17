@@ -73,7 +73,13 @@ public class register extends AppCompatActivity {
                     employeeID.setError("enter in correct format");
                     employeeID.requestFocus();
                     return;
+                } if (TextUtils.isEmpty(email_ed.getText().toString()))
+                {
+                    email_ed.setError("enter email");
+                    email_ed.requestFocus();
+                    return;
                 }
+
 
                 if (TextUtils.isEmpty(name_ed.getText().toString()))
                 {
@@ -101,7 +107,7 @@ public class register extends AppCompatActivity {
                 }
                 if (pass_ed.getText().toString().equals(confirm_ed.getText().toString())) {
                     member.setName(name_ed.getText().toString());
-                  //  member.setEmail(email_ed.getText().toString());
+                    member.setEmail(email_ed.getText().toString());
                     member.setPass(pass_ed.getText().toString());
                     member.setManager1(manager1);
                     member.setManager2(manager2);
